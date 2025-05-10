@@ -1,0 +1,36 @@
+pipeline {
+    agent any 
+    tools {
+          maven 'maven_3_9_8'
+    }
+
+    stages {
+        stage('CHECKOUT') {  
+            steps {
+                script {
+                    checkout scmGit(
+                        branches: [[name: '*/main']],
+                        extensions: [],
+                        userRemoteConfigs: [[
+                            credentialsId: 'github_jenkinspractice',
+                            url: 'https://github.com/AdidelaHarishReddy/jenkins-practice.git'
+                        ]]
+                    )
+                }                           
+            }
+        }
+        
+        
+        
+        stage('build') {
+            
+            steps {
+                sh ''' 
+                    mvn clean package
+                '''                            
+            }
+        }
+        
+        
+    }               
+}
